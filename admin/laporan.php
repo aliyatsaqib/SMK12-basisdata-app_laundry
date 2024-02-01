@@ -8,7 +8,7 @@ include '../layouts/navbar.php';
         <div class="container">
             <div class="row mb-2">
                 <div class="col-sm-6">
-                    <h1 class="m-0">Transaksi</h1>
+                    <h1 class="m-0">Laporan Transaksi</h1>
                 </div>
             </div><!-- /.row -->
         </div><!-- /.container-fluid -->
@@ -23,7 +23,7 @@ include '../layouts/navbar.php';
                 <div class="col-lg-12">
                     <div class="card">
                         <div class="card-header">
-                            <h3 class="card-title">Data Transaksi</h3>
+                            <h3 class="card-title">Data Laporan Transaksi</h3>
 
                             <div class="card-tools">
                                 <button class="btn btn-primary btn-sm" data-toggle="modal" data-target="#modal-tambah"><i class="fas fa-plus"></i> Tambah Data</button>
@@ -42,16 +42,14 @@ include '../layouts/navbar.php';
                                         <th>Berat Cucian</th>
                                         <th>Total Bayar</th>
                                         <th>Status</th>
-                                        <th>Ubah Status</th>
-                                        <th>Bayar Transaksi</th>
                                         <th>Aksi</th>
                                     </tr>
                                 </thead>
                                 <tbody>
                                     <tr>
                                         <td>1.</td>
-                                        <td>Nama Transaksi</td>
-                                        <td>Alamat Transaksi</td>
+                                        <td>Nama Laporan Transaksi</td>
+                                        <td>Alamat Laporan Transaksi</td>
                                         <td>Telephone</td>
                                         <td>Telephone</td>
                                         <td>Telephone</td>
@@ -63,15 +61,8 @@ include '../layouts/navbar.php';
                                             <p class="btn btn-success btn-sm">DiBayar</p>
                                             <p class="btn btn-danger btn-sm">Belum DiBayar</p>
                                         </td>
-                                        <td><button class="btn btn-primary btn-sm" data-toggle="modal" data-target="#modal-ubah-status"><i class="fas fa-edit"> Ubah</i></button>
-                                        </td>
                                         <td>
-                                            <button class="btn btn-primary btn-sm" data-toggle="modal" data-target="#modal-bayar"><i class="fas fa-edit"> Bayar</i></button>
-                                            <button class="btn btn-danger btn-sm" data-toggle="modal" data-target="#modal-batalkan"><i class="fas fa-times"> Batalkan</i></button>
-                                        </td>
-                                        <td>
-                                            <button class="btn btn-warning btn-sm" data-toggle="modal" data-target="#modal-edit"><i class="fas fa-edit"> Edit</i></button>
-                                            <button class="btn btn-danger btn-sm" data-toggle="modal" data-target="#modal-hapus"><i class="fas fa-trash"> Hapus</i></button>
+                                            <a href="print_laporan.php" class="btn btn-primary"><i class="fas fa-print"></i></i></a>
                                         </td>
                                     </tr>
 
@@ -79,7 +70,7 @@ include '../layouts/navbar.php';
                                         <div class="modal-dialog">
                                             <div class="modal-content">
                                                 <div class="modal-header">
-                                                    <h4 class="modal-title">Hapus Data Transaksi</h4>
+                                                    <h4 class="modal-title">Hapus Data Laporan Transaksi</h4>
                                                     <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                                                         <span aria-hidden="true">&times;</span>
                                                     </button>
@@ -89,7 +80,7 @@ include '../layouts/navbar.php';
                                                 </div>
                                                 <div class="modal-footer justify-content-between">
                                                     <button type="button" class="btn btn-default" data-dismiss="modal">Keluar</button>
-                                                    <a href="hapus_Transaksi.php" class="btn btn-primary">Hapus</a>
+                                                    <a href="hapus_Laporan Transaksi.php" class="btn btn-primary">Hapus</a>
                                                 </div>
                                             </div>
                                         </div>
@@ -99,17 +90,17 @@ include '../layouts/navbar.php';
                                         <div class="modal-dialog">
                                             <div class="modal-content">
                                                 <div class="modal-header">
-                                                    <h4 class="modal-title">Bayar Transaksi</h4>
+                                                    <h4 class="modal-title">Bayar Laporan Transaksi</h4>
                                                     <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                                                         <span aria-hidden="true">&times;</span>
                                                     </button>
                                                 </div>
                                                 <div class="modal-body">
-                                                    <p>Apakah anda sudah menerima dana transaksi sebesar <b>Jumlah Uang</b> dari <b>Nama Member</b> ... ?</p>
+                                                    <p>Apakah anda sudah menerima dana Laporan Transaksi sebesar <b>Jumlah Uang</b> dari <b>Nama Member</b> ... ?</p>
                                                 </div>
                                                 <div class="modal-footer justify-content-between">
                                                     <button type="button" class="btn btn-default" data-dismiss="modal">Keluar</button>
-                                                    <a href="hapus_Transaksi.php" class="btn btn-primary">Simpan</a>
+                                                    <a href="hapus_Laporan Transaksi.php" class="btn btn-primary">Simpan</a>
                                                 </div>
                                             </div>
                                         </div>
@@ -119,17 +110,17 @@ include '../layouts/navbar.php';
                                         <div class="modal-dialog">
                                             <div class="modal-content">
                                                 <div class="modal-header">
-                                                    <h4 class="modal-title">Batal Bayar Transaksi</h4>
+                                                    <h4 class="modal-title">Batal Bayar Laporan Transaksi</h4>
                                                     <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                                                         <span aria-hidden="true">&times;</span>
                                                     </button>
                                                 </div>
                                                 <div class="modal-body">
-                                                    <p>Apakah anda membatalkan pembayaran transaksi sebesar <b>Jumlah Uang</b> dari <b>Nama Member</b> ... ?</p>
+                                                    <p>Apakah anda membatalkan pembayaran Laporan Transaksi sebesar <b>Jumlah Uang</b> dari <b>Nama Member</b> ... ?</p>
                                                 </div>
                                                 <div class="modal-footer justify-content-between">
                                                     <button type="button" class="btn btn-default" data-dismiss="modal">Keluar</button>
-                                                    <a href="hapus_Transaksi.php" class="btn btn-primary">Simpan</a>
+                                                    <a href="hapus_Laporan Transaksi.php" class="btn btn-primary">Simpan</a>
                                                 </div>
                                             </div>
                                         </div>
@@ -139,7 +130,7 @@ include '../layouts/navbar.php';
                                         <div class="modal-dialog">
                                             <div class="modal-content">
                                                 <div class="modal-header">
-                                                    <h4 class="modal-title">Ubah Status Transaksi</h4>
+                                                    <h4 class="modal-title">Ubah Status Laporan Transaksi</h4>
                                                     <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                                                         <span aria-hidden="true">&times;</span>
                                                     </button>
@@ -232,12 +223,12 @@ include '../layouts/navbar.php';
                                         <div class="modal-dialog">
                                             <div class="modal-content">
                                                 <div class="modal-header">
-                                                    <h4 class="modal-title">Tambah Data Transaksi</h4>
+                                                    <h4 class="modal-title">Tambah Data Laporan Transaksi</h4>
                                                     <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                                                         <span aria-hidden="true">&times;</span>
                                                     </button>
                                                 </div>
-                                                <form method="post" action="tambah_Transaksi.php">
+                                                <form method="post" action="tambah_Laporan Transaksi.php">
                                                     <div class="modal-body">
                                                         <div class="form-group">
                                                             <label>Pilih Member</label>
