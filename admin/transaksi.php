@@ -97,6 +97,46 @@ include '../layouts/navbar.php';
                                         </div>
                                     </div>
 
+                                    <div class="modal fade" id="modal-bayar">
+                                        <div class="modal-dialog">
+                                            <div class="modal-content">
+                                                <div class="modal-header">
+                                                    <h4 class="modal-title">Bayar Transaksi</h4>
+                                                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                                        <span aria-hidden="true">&times;</span>
+                                                    </button>
+                                                </div>
+                                                <div class="modal-body">
+                                                    <p>Apakah anda sudah menerima dana transaksi sebesar <b>Jumlah Uang</b> dari <b>Nama Member</b> ... ?</p>
+                                                </div>
+                                                <div class="modal-footer justify-content-between">
+                                                    <button type="button" class="btn btn-default" data-dismiss="modal">Keluar</button>
+                                                    <a href="hapus_Transaksi.php" class="btn btn-primary">Simpan</a>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    <div class="modal fade" id="modal-batalkan">
+                                        <div class="modal-dialog">
+                                            <div class="modal-content">
+                                                <div class="modal-header">
+                                                    <h4 class="modal-title">Batal Bayar Transaksi</h4>
+                                                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                                        <span aria-hidden="true">&times;</span>
+                                                    </button>
+                                                </div>
+                                                <div class="modal-body">
+                                                    <p>Apakah anda membatalkan pembayaran transaksi sebesar <b>Jumlah Uang</b> dari <b>Nama Member</b> ... ?</p>
+                                                </div>
+                                                <div class="modal-footer justify-content-between">
+                                                    <button type="button" class="btn btn-default" data-dismiss="modal">Keluar</button>
+                                                    <a href="hapus_Transaksi.php" class="btn btn-primary">Simpan</a>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+
                                     <div class="modal fade" id="modal-ubah-status">
                                         <div class="modal-dialog">
                                             <div class="modal-content">
