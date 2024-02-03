@@ -26,10 +26,7 @@ include '../layouts/navbar.php';
                             <h5 class="card-title m-0">Featured</h5>
                         </div>-->
                         <div class="card-body">
-                            <h6 class="card-title">Selamat Datang</h6>
-
-                            <p class="card-text">With supporting text below as a natural lead-in to additional content.</p>
-                            <a href="#" class="btn btn-primary">Go somewhere</a>
+                            <h6 class="card-title">Selamat Datang Kasir</h6>
                         </div>
                     </div>
                 </div>

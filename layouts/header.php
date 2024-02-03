@@ -1,3 +1,11 @@
+<?php
+session_start();
+
+//cek apakah yang mengakses halaman ini sudah login
+if($_SESSION['role']==""){
+    header("location:../index.php?info=login");
+}
+?>
 <!DOCTYPE html>
 <!--
 This is a starter template page. Use this page to start your new project from
