@@ -44,90 +44,106 @@ include '../layouts/navbar.php';
                                     </tr>
                                 </thead>
                                 <tbody>
-                                    <tr>
-                                        <td>1.</td>
-                                        <td>Nama</td>
-                                        <td>Username</td>
-                                        <td>Nama Outlet</td>
-                                        <td>Akses</td>
-                                        <td>
-                                            <button class="btn btn-warning btn-sm" data-toggle="modal" data-target="#modal-edit"><i class="fas fa-edit"> Edit</i></button>
-                                            <button class="btn btn-danger btn-sm" data-toggle="modal" data-target="#modal-hapus"><i class="fas fa-trash"> Hapus</i></button>
-                                        </td>
-                                    </tr>
+                                    <?php
+                                    $no = 1;
+                                    include "../koneksi.php";
+                                    $tb_user = mysqli_query($koneksi, "SELECT * FROM tb_user");
+                                    while ($d_tb_user = mysqli_fetch_array($tb_user)) {
+                                        $tb_outlet_d = mysqli_query($koneksi, "SELECT * FROM tb_outlet where id='$d_tb_user[id_outlet]'");
+                                        while ($d_tb_outlet_d = mysqli_fetch_array($tb_outlet_d)) {
+                                    ?>
+                                            <tr>
+                                                <td><?php echo $no++; ?></td>
+                                                <td><?= $d_tb_user['nama'] ?></td>
+                                                <td><?= $d_tb_user['username'] ?></td>
+                                                <td><?= $d_tb_outlet_d['nama'] ?></td>
+                                                <td><?= $d_tb_user['role'] ?></td>
+                                                <td>
+                                                    <button class="btn btn-warning btn-sm" data-toggle="modal" data-target="#modal-edit<?php echo $d_tb_user['id']; ?>"><i class="fas fa-edit"> Edit</i></button>
+                                                    <button class="btn btn-danger btn-sm" data-toggle="modal" data-target="#modal-hapus<?php echo $d_tb_user['id']; ?>"><i class="fas fa-trash"> Hapus</i></button>
+                                                </td>
+                                            </tr>
 
-                                    <div class="modal fade" id="modal-hapus">
-                                        <div class="modal-dialog">
-                                            <div class="modal-content">
-                                                <div class="modal-header">
-                                                    <h4 class="modal-title">Hapus Data Pengguna</h4>
-                                                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                                                        <span aria-hidden="true">&times;</span>
-                                                    </button>
-                                                </div>
-                                                <div class="modal-body">
-                                                    <p>Apakah anda yakin akan menghapus data ini ... ?</p>
-                                                </div>
-                                                <div class="modal-footer justify-content-between">
-                                                    <button type="button" class="btn btn-default" data-dismiss="modal">Keluar</button>
-                                                    <a href="hapus_Pengguna.php" class="btn btn-primary">Hapus</a>
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </div>
-
-                                    <div class="modal fade" id="modal-edit">
-                                        <div class="modal-dialog">
-                                            <div class="modal-content">
-                                                <div class="modal-header">
-                                                    <h4 class="modal-title">Edit Data Pengguna</h4>
-                                                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                                                        <span aria-hidden="true">&times;</span>
-                                                    </button>
-                                                </div>
-                                                <form method="post" action="edit_Pengguna.php">
-                                                    <div class="modal-body">
-                                                        <div class="form-group">
-                                                            <label>Nama Pengguna</label>
-                                                            <input type="text" name="" class="form-control" placeholder="Masukkan Nama Pengguna">
+                                            <div class="modal fade" id="modal-hapus<?php echo $d_tb_user['id']; ?>">
+                                                <div class="modal-dialog">
+                                                    <div class="modal-content">
+                                                        <div class="modal-header">
+                                                            <h4 class="modal-title">Hapus Data Pengguna</h4>
+                                                            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                                                <span aria-hidden="true">&times;</span>
+                                                            </button>
                                                         </div>
-                                                        <div class="form-group">
-                                                            <label>Username</label>
-                                                            <input type="text" name="" class="form-control" placeholder="Masukkan Username">
+                                                        <div class="modal-body">
+                                                            <p>Apakah anda yakin akan menghapus data <b><?php echo $d_tb_user['nama']; ?></b> ... ?</p>
                                                         </div>
-                                                        <div class="form-group">
-                                                            <label>Password</label>
-                                                            <input type="password" name="" class="form-control" placeholder="Masukkan Password">
-                                                        </div>
-                                                        <div class="form-group">
-                                                            <label>Nama Outlet</label>
-                                                            <select class="form-control">
-                                                                <option> --- Pilih Nama Outlet --- </option>
-                                                                <option>Outlet 1</option>
-                                                                <option>Outlet 2</option>
-                                                                <option>Outlet 3</option>
-                                                                <option>Outlet 4</option>
-                                                                <option>Outlet 5</option>
-                                                            </select>
-                                                        </div>
-                                                        <div class="form-group">
-                                                            <label>Akses</label>
-                                                            <select class="form-control">
-                                                                <option> --- Silahkan Pilih Akses --- </option>
-                                                                <option value="admin">Admin</option>
-                                                                <option value="kasir">Kasir</option>
-                                                                <option value="owner">Owner</option>
-                                                            </select>
+                                                        <div class="modal-footer justify-content-between">
+                                                            <button type="button" class="btn btn-default" data-dismiss="modal">Keluar</button>
+                                                            <a href="hapus_pengguna.php?id=<?php echo $d_tb_user['id']; ?>" class="btn btn-primary">Hapus</a>
                                                         </div>
                                                     </div>
-                                                    <div class="modal-footer justify-content-between">
-                                                        <button type="button" class="btn btn-default" data-dismiss="modal">Keluar</button>
-                                                        <button type="submit" class="btn btn-primary">Update</button>
-                                                    </div>
-                                                </form>
+                                                </div>
                                             </div>
-                                        </div>
-                                    </div>
+
+                                            <div class="modal fade" id="modal-edit<?php echo $d_tb_user['id']; ?>">
+                                                <div class="modal-dialog">
+                                                    <div class="modal-content">
+                                                        <div class="modal-header">
+                                                            <h4 class="modal-title">Edit Data Pengguna</h4>
+                                                            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                                                <span aria-hidden="true">&times;</span>
+                                                            </button>
+                                                        </div>
+                                                        <form method="post" action="update_pengguna.php">
+                                                            <div class="modal-body">
+                                                                <div class="form-group">
+                                                                    <label>Nama Pengguna</label>
+                                                                    <input type="text" name="id" value="<?php echo $d_tb_user['id']; ?>" hidden>
+                                                                    <input type="text" value="<?php echo $d_tb_user['nama']; ?>" name="nama" class="form-control" placeholder="Masukkan Nama Pengguna">
+                                                                </div>
+                                                                <div class="form-group">
+                                                                    <label>Username</label>
+                                                                    <input type="text" value="<?php echo $d_tb_user['username']; ?>" name="username" class="form-control" placeholder="Masukkan Username">
+                                                                </div>
+                                                                <div class="form-group">
+                                                                    <label>Password</label>
+                                                                    <input type="password" name="password" class="form-control" placeholder="Masukkan Password" required="">
+                                                                </div>
+                                                                <div class="form-group">
+                                                                    <label>Nama Outlet</label>
+                                                                    <select name="id_outlet" class="form-control">
+                                                                        <option> --- Pilih Nama Outlet --- </option>
+                                                                        <?php
+                                                                        include "../koneksi.php";
+                                                                        $tb_outlet = mysqli_query($koneksi, "SELECT * FROM tb_outlet");
+                                                                        while ($d_tb_outlet = mysqli_fetch_array($tb_outlet)) {
+                                                                        ?>
+                                                                            <option value="<?= $d_tb_outlet['id'] ?>" <?php if ($d_tb_outlet['id'] == $d_tb_user['id_outlet']) {
+                                                                                                                            echo 'selected';
+                                                                                                                        } ?>><?= $d_tb_outlet['nama'] ?></option>
+                                                                        <?php } ?>
+                                                                    </select>
+                                                                </div>
+                                                                <div class="form-group">
+                                                                    <label>Akses</label>
+                                                                    <select class="form-control" name="role">
+                                                                        <option> --- Silahkan Pilih Akses --- </option>
+                                                                        <option value="admin" <?php if ('admin' == $d_tb_user['role']) { echo 'selected'; } ?>>Admin</option>
+                                                                        <option value="kasir" <?php if ('kasir' == $d_tb_user['role']) { echo 'selected'; } ?>>Kasir</option>
+                                                                        <option value="owner" <?php if ('owner' == $d_tb_user['role']) { echo 'selected'; } ?>>Owner</option>
+                                                                    </select>
+                                                                </div>
+                                                            </div>
+                                                            <div class="modal-footer justify-content-between">
+                                                                <button type="button" class="btn btn-default" data-dismiss="modal">Keluar</button>
+                                                                <button type="submit" class="btn btn-primary">Update</button>
+                                                            </div>
+                                                        </form>
+                                                    </div>
+                                                </div>
+                                            </div>
+
+                                    <?php }
+                                    } ?>
 
                                     <div class="modal fade" id="modal-tambah">
                                         <div class="modal-dialog">
@@ -138,34 +154,36 @@ include '../layouts/navbar.php';
                                                         <span aria-hidden="true">&times;</span>
                                                     </button>
                                                 </div>
-                                                <form method="post" action="tambah_Pengguna.php">
+                                                <form method="post" action="simpan_pengguna.php">
                                                     <div class="modal-body">
                                                         <div class="form-group">
                                                             <label>Nama Pengguna</label>
-                                                            <input type="text" name="" class="form-control" placeholder="Masukkan Nama Pengguna">
+                                                            <input type="text" name="nama" class="form-control" placeholder="Masukkan Nama Pengguna">
                                                         </div>
                                                         <div class="form-group">
                                                             <label>Username</label>
-                                                            <input type="text" name="" class="form-control" placeholder="Masukkan Username">
+                                                            <input type="text" name="username" class="form-control" placeholder="Masukkan Username">
                                                         </div>
                                                         <div class="form-group">
                                                             <label>Password</label>
-                                                            <input type="password" name="" class="form-control" placeholder="Masukkan Password">
+                                                            <input type="password" name="password" class="form-control" placeholder="Masukkan Password">
                                                         </div>
                                                         <div class="form-group">
                                                             <label>Nama Outlet</label>
-                                                            <select class="form-control">
+                                                            <select name="id_outlet" class="form-control">
                                                                 <option> --- Pilih Nama Outlet --- </option>
-                                                                <option>Outlet 1</option>
-                                                                <option>Outlet 2</option>
-                                                                <option>Outlet 3</option>
-                                                                <option>Outlet 4</option>
-                                                                <option>Outlet 5</option>
+                                                                <?php
+                                                                include "../koneksi.php";
+                                                                $tb_outlet = mysqli_query($koneksi, "SELECT * FROM tb_outlet");
+                                                                while ($d_tb_outlet = mysqli_fetch_array($tb_outlet)) {
+                                                                ?>
+                                                                    <option value="<?= $d_tb_outlet['id'] ?>"><?= $d_tb_outlet['nama'] ?></option>
+                                                                <?php } ?>
                                                             </select>
                                                         </div>
                                                         <div class="form-group">
                                                             <label>Akses</label>
-                                                            <select class="form-control">
+                                                            <select class="form-control" name="role">
                                                                 <option> --- Silahkan Pilih Akses --- </option>
                                                                 <option value="admin">Admin</option>
                                                                 <option value="kasir">Kasir</option>

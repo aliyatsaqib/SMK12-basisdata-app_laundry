@@ -32,6 +32,28 @@ include '../layouts/navbar.php';
                         </div>
                         <!-- /.card-header -->
                         <div class="card-body">
+                            <?php
+                            if (isset($_GET['info'])) {
+                                if ($_GET['info'] == "hapus") { ?>
+                                    <div class="alert alert-success alert-dismissible">
+                                        <button type="button" class="close" data-dismiss="alert" aria-hidden="true">&times;</button>
+                                        <h5><i class="icon fas fa-trash"></i> Sukses</h5>
+                                        Data berhasil di hapus
+                                    </div>
+                                <?php } else if ($_GET['info'] == "simpan") { ?>
+                                    <div class="alert alert-success alert-dismissible">
+                                        <button type="button" class="close" data-dismiss="alert" aria-hidden="true">&times;</button>
+                                        <h5><i class="icon fas fa-check"></i> Sukses</h5>
+                                        Data berhasil di hapus
+                                    </div>
+                                <?php } else if ($_GET['info'] == "update") { ?>
+                                    <div class="alert alert-success alert-dismissible">
+                                        <button type="button" class="close" data-dismiss="alert" aria-hidden="true">&times;</button>
+                                        <h5><i class="icon fas fa-edit"></i> Sukses</h5>
+                                        Data berhasil di update
+                                    </div>
+                            <?php }
+                            } ?>
                             <table class="table table-bordered">
                                 <thead>
                                     <tr>
@@ -44,89 +66,113 @@ include '../layouts/navbar.php';
                                     </tr>
                                 </thead>
                                 <tbody>
-                                    <tr>
-                                        <td>1.</td>
-                                        <td>Nama Outlet</td>
-                                        <td>Jenis</td>
-                                        <td>Nama Paket</td>
-                                        <td>Harga</td>
-                                        <td>
-                                            <button class="btn btn-warning btn-sm" data-toggle="modal" data-target="#modal-edit"><i class="fas fa-edit"> Edit</i></button>
-                                            <button class="btn btn-danger btn-sm" data-toggle="modal" data-target="#modal-hapus"><i class="fas fa-trash"> Hapus</i></button>
-                                        </td>
-                                    </tr>
+                                    <?php
+                                    $no = 1;
+                                    include "../koneksi.php";
+                                    $tb_paket = mysqli_query($koneksi, "SELECT * FROM tb_paket");
+                                    while ($d_tb_paket = mysqli_fetch_array($tb_paket)) {
+                                        $tb_outlet_d = mysqli_query($koneksi, "SELECT * FROM tb_outlet where id='$d_tb_paket[id_outlet]'");
+                                        while ($d_tb_outlet_d = mysqli_fetch_array($tb_outlet_d)) {
+                                    ?>
+                                            <tr>
+                                                <td><?php echo $no++; ?></td>
+                                                <td><?= $d_tb_outlet_d['nama'] ?></td>
+                                                <td><?= $d_tb_paket['jenis'] ?></td>
+                                                <td><?= $d_tb_paket['nama_paket'] ?></td>
+                                                <td>Rp. <?= number_format($d_tb_paket['harga']) ?></td>
+                                                <td>
+                                                    <button class="btn btn-warning btn-sm" data-toggle="modal" data-target="#modal-edit<?php echo $d_tb_paket['id']; ?>"><i class="fas fa-edit"> Edit</i></button>
+                                                    <button class="btn btn-danger btn-sm" data-toggle="modal" data-target="#modal-hapus<?php echo $d_tb_paket['id']; ?>"><i class="fas fa-trash"> Hapus</i></button>
+                                                </td>
+                                            </tr>
 
-                                    <div class="modal fade" id="modal-hapus">
-                                        <div class="modal-dialog">
-                                            <div class="modal-content">
-                                                <div class="modal-header">
-                                                    <h4 class="modal-title">Hapus Data Paket</h4>
-                                                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                                                        <span aria-hidden="true">&times;</span>
-                                                    </button>
-                                                </div>
-                                                <div class="modal-body">
-                                                    <p>Apakah anda yakin akan menghapus data ini ... ?</p>
-                                                </div>
-                                                <div class="modal-footer justify-content-between">
-                                                    <button type="button" class="btn btn-default" data-dismiss="modal">Keluar</button>
-                                                    <a href="hapus_Paket.php" class="btn btn-primary">Hapus</a>
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </div>
-
-                                    <div class="modal fade" id="modal-edit">
-                                        <div class="modal-dialog">
-                                            <div class="modal-content">
-                                                <div class="modal-header">
-                                                    <h4 class="modal-title">Edit Data Paket</h4>
-                                                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                                                        <span aria-hidden="true">&times;</span>
-                                                    </button>
-                                                </div>
-                                                <form method="post" action="edit_Paket.php">
-                                                    <div class="modal-body">
-                                                        <div class="form-group">
-                                                            <label>Nama Outlet</label>
-                                                            <select class="form-control">
-                                                                <option> --- Pilih Nama Outlet --- </option>
-                                                                <option>Outlet 1</option>
-                                                                <option>Outlet 2</option>
-                                                                <option>Outlet 3</option>
-                                                                <option>Outlet 4</option>
-                                                                <option>Outlet 5</option>
-                                                            </select>
+                                            <div class="modal fade" id="modal-hapus<?php echo $d_tb_paket['id']; ?>">
+                                                <div class="modal-dialog">
+                                                    <div class="modal-content">
+                                                        <div class="modal-header">
+                                                            <h4 class="modal-title">Hapus Data Paket</h4>
+                                                            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                                                <span aria-hidden="true">&times;</span>
+                                                            </button>
                                                         </div>
-                                                        <div class="form-group">
-                                                            <label>Jenis</label>
-                                                            <select class="form-control">
-                                                                <option> --- Silahkan Pilih Jenis --- </option>
-                                                                <option value="kiloan">Kiloan</option>
-                                                                <option value="selimut">Selimut</option>
-                                                                <option value="bed_cover">Bed Cover</option>
-                                                                <option value="kaos">Kaos</option>
-                                                                <option value="lain">Lain - Lain</option>
-                                                            </select>
+                                                        <div class="modal-body">
+                                                            <p>Apakah anda yakin akan menghapus data <b><?php echo $d_tb_paket['nama_paket']; ?></b> ... ?</p>
                                                         </div>
-                                                        <div class="form-group">
-                                                            <label>Nama Paket</label>
-                                                            <input type="text" name="nama_paket" class="form-control" placeholder="Masukkan Nama Paket">
-                                                        </div>
-                                                        <div class="form-group">
-                                                            <label>Harga</label>
-                                                            <input type="number" name="harga" class="form-control" placeholder="Masukkan Harga">
+                                                        <div class="modal-footer justify-content-between">
+                                                            <button type="button" class="btn btn-default" data-dismiss="modal">Keluar</button>
+                                                            <a href="hapus_paket.php?id=<?php echo $d_tb_paket['id']; ?>" class="btn btn-primary">Hapus</a>
                                                         </div>
                                                     </div>
-                                                    <div class="modal-footer justify-content-between">
-                                                        <button type="button" class="btn btn-default" data-dismiss="modal">Keluar</button>
-                                                        <button type="submit" class="btn btn-primary">Update</button>
-                                                    </div>
-                                                </form>
+                                                </div>
                                             </div>
-                                        </div>
-                                    </div>
 
+                                            <div class="modal fade" id="modal-edit<?php echo $d_tb_paket['id']; ?>">
+                                                <div class="modal-dialog">
+                                                    <div class="modal-content">
+                                                        <div class="modal-header">
+                                                            <h4 class="modal-title">Edit Data Paket</h4>
+                                                            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                                                <span aria-hidden="true">&times;</span>
+                                                            </button>
+                                                        </div>
+                                                        <form method="post" action="update_paket.php">
+                                                            <div class="modal-body">
+                                                                <div class="form-group">
+                                                                    <label>Nama Outlet</label>
+                                                                    <input type="text" name="id" value="<?php echo $d_tb_paket['id']; ?>" class="form-control" placeholder="Masukkan Nama Paket" hidden>
+                                                                    <select name="id_outlet" class="form-control">
+                                                                        <option> --- Pilih Nama Outlet --- </option>
+                                                                        <?php
+                                                                        include "../koneksi.php";
+                                                                        $tb_outlet = mysqli_query($koneksi, "SELECT * FROM tb_outlet");
+                                                                        while ($d_tb_outlet = mysqli_fetch_array($tb_outlet)) {
+                                                                        ?>
+                                                                            <option value="<?= $d_tb_outlet['id'] ?>" <?php if ($d_tb_outlet['id'] == $d_tb_paket['id_outlet']) {
+                                                                                                                            echo 'selected';
+                                                                                                                        } ?>><?= $d_tb_outlet['nama'] ?></option>
+                                                                        <?php } ?>
+                                                                    </select>
+                                                                </div>
+                                                                <div class="form-group">
+                                                                    <label>Jenis</label>
+                                                                    <select class="form-control" name="jenis">
+                                                                        <option> --- Silahkan Pilih Jenis --- </option>
+                                                                        <option value="kiloan" <?php if ('kiloan' == $d_tb_paket['jenis']) {
+                                                                                                    echo 'selected';
+                                                                                                } ?>>Kiloan</option>
+                                                                        <option value="selimut" <?php if ('selimut' == $d_tb_paket['jenis']) {
+                                                                                                    echo 'selected';
+                                                                                                } ?>>Selimut</option>
+                                                                        <option value="bed_cover" <?php if ('bed_cover' == $d_tb_paket['jenis']) {
+                                                                                                        echo 'selected';
+                                                                                                    } ?>>Bed Cover</option>
+                                                                        <option value="kaos" <?php if ('kaos' == $d_tb_paket['jenis']) {
+                                                                                                    echo 'selected';
+                                                                                                } ?>>Kaos</option>
+                                                                        <option value="lain" <?php if ('lain' == $d_tb_paket['jenis']) {
+                                                                                                    echo 'selected';
+                                                                                                } ?>>Lain - Lain</option>
+                                                                    </select>
+                                                                </div>
+                                                                <div class="form-group">
+                                                                    <label>Nama Paket</label>
+                                                                    <input type="text" name="nama_paket" value="<?php echo $d_tb_paket['nama_paket']; ?>" class="form-control" placeholder="Masukkan Nama Paket">
+                                                                </div>
+                                                                <div class="form-group">
+                                                                    <label>Harga</label>
+                                                                    <input type="number" name="harga" value="<?php echo $d_tb_paket['harga']; ?>" class="form-control" placeholder="Masukkan Harga">
+                                                                </div>
+                                                            </div>
+                                                            <div class="modal-footer justify-content-between">
+                                                                <button type="button" class="btn btn-default" data-dismiss="modal">Keluar</button>
+                                                                <button type="submit" class="btn btn-primary">Update</button>
+                                                            </div>
+                                                        </form>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                    <?php }
+                                    } ?>
                                     <div class="modal fade" id="modal-tambah">
                                         <div class="modal-dialog">
                                             <div class="modal-content">
@@ -136,22 +182,24 @@ include '../layouts/navbar.php';
                                                         <span aria-hidden="true">&times;</span>
                                                     </button>
                                                 </div>
-                                                <form method="post" action="tambah_Paket.php">
-                                                <div class="modal-body">
+                                                <form method="post" action="simpan_paket.php">
+                                                    <div class="modal-body">
                                                         <div class="form-group">
                                                             <label>Nama Outlet</label>
-                                                            <select class="form-control">
+                                                            <select class="form-control" name="id_outlet">
                                                                 <option> --- Pilih Nama Outlet --- </option>
-                                                                <option>Outlet 1</option>
-                                                                <option>Outlet 2</option>
-                                                                <option>Outlet 3</option>
-                                                                <option>Outlet 4</option>
-                                                                <option>Outlet 5</option>
+                                                                <?php
+                                                                include "../koneksi.php";
+                                                                $tb_outlet = mysqli_query($koneksi, "SELECT * FROM tb_outlet");
+                                                                while ($d_tb_outlet = mysqli_fetch_array($tb_outlet)) {
+                                                                ?>
+                                                                    <option value="<?= $d_tb_outlet['id'] ?>"><?= $d_tb_outlet['nama'] ?></option>
+                                                                <?php } ?>
                                                             </select>
                                                         </div>
                                                         <div class="form-group">
                                                             <label>Jenis</label>
-                                                            <select class="form-control">
+                                                            <select class="form-control" name="jenis">
                                                                 <option> --- Silahkan Pilih Jenis --- </option>
                                                                 <option value="kiloan">Kiloan</option>
                                                                 <option value="selimut">Selimut</option>
