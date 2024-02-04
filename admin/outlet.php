@@ -32,6 +32,28 @@ include '../layouts/navbar.php';
                         </div>
                         <!-- /.card-header -->
                         <div class="card-body">
+                            <?php
+                            if (isset($_GET['info'])) {
+                                if ($_GET['info'] == "hapus") { ?>
+                                    <div class="alert alert-success alert-dismissible">
+                                        <button type="button" class="close" data-dismiss="alert" aria-hidden="true">&times;</button>
+                                        <h5><i class="icon fas fa-trash"></i> Sukses</h5>
+                                        Data berhasil di hapus
+                                    </div>
+                                <?php } else if ($_GET['info'] == "simpan") { ?>
+                                    <div class="alert alert-success alert-dismissible">
+                                        <button type="button" class="close" data-dismiss="alert" aria-hidden="true">&times;</button>
+                                        <h5><i class="icon fas fa-check"></i> Sukses</h5>
+                                        Data berhasil di hapus
+                                    </div>
+                                <?php } else if ($_GET['info'] == "update") { ?>
+                                    <div class="alert alert-success alert-dismissible">
+                                        <button type="button" class="close" data-dismiss="alert" aria-hidden="true">&times;</button>
+                                        <h5><i class="icon fas fa-edit"></i> Sukses</h5>
+                                        Data berhasil di update
+                                    </div>
+                            <?php }
+                            } ?>
                             <table class="table table-bordered">
                                 <thead>
                                     <tr>
@@ -43,69 +65,77 @@ include '../layouts/navbar.php';
                                     </tr>
                                 </thead>
                                 <tbody>
-                                    <tr>
-                                        <td>1.</td>
-                                        <td>Nama Outlet</td>
-                                        <td>Alamat Outlet</td>
-                                        <td>Telephone Outlet</td>
-                                        <td>
-                                            <button class="btn btn-warning btn-sm" data-toggle="modal" data-target="#modal-edit"><i class="fas fa-edit"> Edit</i></button>
-                                            <button class="btn btn-danger btn-sm" data-toggle="modal" data-target="#modal-hapus"><i class="fas fa-trash"> Hapus</i></button>
-                                        </td>
-                                    </tr>
+                                    <?php
+                                    $no = 1;
+                                    include "../koneksi.php";
+                                    $tb_outlet = mysqli_query($koneksi, "SELECT * FROM tb_outlet");
+                                    while ($d_tb_outlet = mysqli_fetch_array($tb_outlet)) {
+                                    ?>
+                                        <tr>
+                                            <td><?php echo $no++; ?></td>
+                                            <td><?= $d_tb_outlet['nama'] ?></td>
+                                            <td><?= $d_tb_outlet['alamat'] ?></td>
+                                            <td><?= $d_tb_outlet['tlp'] ?></td>
+                                            <td>
+                                                <button class="btn btn-warning btn-sm" data-toggle="modal" data-target="#modal-edit<?php echo $d_tb_outlet['id']; ?>"><i class="fas fa-edit"> Edit</i></button>
+                                                <button class="btn btn-danger btn-sm" data-toggle="modal" data-target="#modal-hapus<?php echo $d_tb_outlet['id']; ?>"><i class="fas fa-trash"> Hapus</i></button>
+                                            </td>
+                                        </tr>
 
-                                    <div class="modal fade" id="modal-hapus">
-                                        <div class="modal-dialog">
-                                            <div class="modal-content">
-                                                <div class="modal-header">
-                                                    <h4 class="modal-title">Hapus Data Outlet</h4>
-                                                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                                                        <span aria-hidden="true">&times;</span>
-                                                    </button>
-                                                </div>
-                                                <div class="modal-body">
-                                                    <p>Apakah anda yakin akan menghapus data ini ... ?</p>
-                                                </div>
-                                                <div class="modal-footer justify-content-between">
-                                                    <button type="button" class="btn btn-default" data-dismiss="modal">Keluar</button>
-                                                    <a href="hapus_outlet.php" class="btn btn-primary">Hapus</a>
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </div>
-
-                                    <div class="modal fade" id="modal-edit">
-                                        <div class="modal-dialog">
-                                            <div class="modal-content">
-                                                <div class="modal-header">
-                                                    <h4 class="modal-title">Edit Data Outlet</h4>
-                                                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                                                        <span aria-hidden="true">&times;</span>
-                                                    </button>
-                                                </div>
-                                                <form method="post" action="edit_outlet.php">
+                                        <div class="modal fade" id="modal-hapus<?php echo $d_tb_outlet['id']; ?>">
+                                            <div class="modal-dialog">
+                                                <div class="modal-content">
+                                                    <div class="modal-header">
+                                                        <h4 class="modal-title">Hapus Data Outlet</h4>
+                                                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                                            <span aria-hidden="true">&times;</span>
+                                                        </button>
+                                                    </div>
                                                     <div class="modal-body">
-                                                        <div class="form-group">
-                                                            <label>Nama</label>
-                                                            <input type="text" name="nama" class="form-control" placeholder="Masukkan Nama">
-                                                        </div>
-                                                        <div class="form-group">
-                                                            <label>Alamat</label>
-                                                            <textarea class="form-control" name="" rows="3"></textarea>
-                                                        </div>
-                                                        <div class="form-group">
-                                                            <label>Telephone</label>
-                                                            <input type="text" name="nama" class="form-control" placeholder="Masukkan Telephone">
-                                                        </div>
+                                                        <p>Apakah anda yakin akan menghapus data <b><?php echo $d_tb_outlet['nama']; ?></b> ini ... ?</p>
                                                     </div>
                                                     <div class="modal-footer justify-content-between">
                                                         <button type="button" class="btn btn-default" data-dismiss="modal">Keluar</button>
-                                                        <button type="submit" class="btn btn-primary">Update</button>
+                                                        <a href="hapus_outlet.php?id=<?php echo $d_tb_outlet['id']; ?>" class="btn btn-primary">Hapus</a>
                                                     </div>
-                                                </form>
+                                                </div>
                                             </div>
                                         </div>
-                                    </div>
+
+                                        <div class="modal fade" id="modal-edit<?php echo $d_tb_outlet['id']; ?>">
+                                            <div class="modal-dialog">
+                                                <div class="modal-content">
+                                                    <div class="modal-header">
+                                                        <h4 class="modal-title">Edit Data Outlet</h4>
+                                                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                                            <span aria-hidden="true">&times;</span>
+                                                        </button>
+                                                    </div>
+                                                    <form method="post" action="update_outlet.php">
+                                                        <div class="modal-body">
+                                                            <div class="form-group">
+                                                                <label>Nama</label>
+                                                                <input type="text" name="id" value="<?php echo $d_tb_outlet['id']; ?>" hidden>
+                                                                <input type="text" name="nama" class="form-control" value="<?php echo $d_tb_outlet['nama']; ?>" placeholder="Masukkan Nama">
+                                                            </div>
+                                                            <div class="form-group">
+                                                                <label>Alamat</label>
+                                                                <textarea class="form-control" name="alamat" rows="3">"<?php echo $d_tb_outlet['alamat']; ?>"</textarea>
+                                                            </div>
+                                                            <div class="form-group">
+                                                                <label>Telephone</label>
+                                                                <input type="text" name="tlp" class="form-control" value="<?php echo $d_tb_outlet['tlp']; ?>" placeholder="Masukkan Telephone">
+                                                            </div>
+                                                        </div>
+                                                        <div class="modal-footer justify-content-between">
+                                                            <button type="button" class="btn btn-default" data-dismiss="modal">Keluar</button>
+                                                            <button type="submit" class="btn btn-primary">Simpan</button>
+                                                        </div>
+                                                    </form>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    <?php } ?>
 
                                     <div class="modal fade" id="modal-tambah">
                                         <div class="modal-dialog">
@@ -116,7 +146,7 @@ include '../layouts/navbar.php';
                                                         <span aria-hidden="true">&times;</span>
                                                     </button>
                                                 </div>
-                                                <form method="post" action="tambah_outlet.php">
+                                                <form method="post" action="simpan_outlet.php">
                                                     <div class="modal-body">
                                                         <div class="form-group">
                                                             <label>Nama</label>
@@ -124,11 +154,11 @@ include '../layouts/navbar.php';
                                                         </div>
                                                         <div class="form-group">
                                                             <label>Alamat</label>
-                                                            <textarea class="form-control" name="" rows="3"></textarea>
+                                                            <textarea class="form-control" name="alamat" rows="3"></textarea>
                                                         </div>
                                                         <div class="form-group">
                                                             <label>Telephone</label>
-                                                            <input type="text" name="nama" class="form-control" placeholder="Masukkan Telephone">
+                                                            <input type="text" name="tlp" class="form-control" placeholder="Masukkan Telephone">
                                                         </div>
                                                     </div>
                                                     <div class="modal-footer justify-content-between">
