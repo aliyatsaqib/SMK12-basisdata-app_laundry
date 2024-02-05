@@ -120,7 +120,7 @@ include '../layouts/navbar.php';
                                                             </div>
                                                             <div class="form-group">
                                                                 <label>Alamat</label>
-                                                                <textarea class="form-control" name="alamat" rows="3">"<?php echo $d_tb_outlet['alamat']; ?>"</textarea>
+                                                                <textarea class="form-control" name="alamat" rows="3"><?php echo $d_tb_outlet['alamat']; ?></textarea>
                                                             </div>
                                                             <div class="form-group">
                                                                 <label>Telephone</label>
