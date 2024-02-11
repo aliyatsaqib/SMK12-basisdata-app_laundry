@@ -26,6 +26,7 @@ include '../layouts/navbar.php';
                             <h3 class="card-title">Data Transaksi</h3>
 
                             <div class="card-tools">
+                                <!--<a href="tambah_transaksi.php" class="btn btn-primary btn-sm"><i class="fas fa-plus"> Tambah Data</i></a>-->
                                 <button class="btn btn-primary btn-sm" data-toggle="modal" data-target="#modal-tambah"><i class="fas fa-plus"></i> Tambah Data</button>
                             </div>
 
@@ -172,12 +173,19 @@ include '../layouts/navbar.php';
                                                                         </button>
                                                                     </div>
                                                                     <div class="modal-body">
-                                                                        <p>Apakah anda sudah menerima dana transaksi sebesar <b>Rp. <?= number_format($total); ?></b> dari <b><?php echo $d_tb_member_d['nama']; ?></b> ?</p>
+                                                                        <p>Apakah anda sudah menerima dana transaksi sebesar <b><?php
+                                                                                                                                $a = $d_tb_paket_d['harga'];
+                                                                                                                                $b = $d_tb_transaksi['qty'];
+                                                                                                                                $c = $d_tb_transaksi['biaya_tambahan'];
+                                                                                                                                $total = ($a * $b) + $c;
+                                                                                                                                echo "Rp. $total";
+                                                                                                                                ?></b> dari <b><?= $d_tb_member_d['nama'] ?></b>...?</p>
                                                                         <form method="post" action="update_bayar_transaksi.php">
                                                                             <div class="modal-body">
                                                                                 <div class="form-group">
                                                                                     <input type="text" name="id" value="<?php echo $d_tb_transaksi['id']; ?>" hidden>
-                                                                                    <input type="text" name="dibayar" value="dibayar" hidden>
+                                                                                    <input type="text" name="qty" value="<?php echo $d_tb_transaksi['qty']; ?>" hidden>
+                                                                                    <input type="text" name="id_paket" value="<?php echo $d_tb_paket_d['id']; ?>" hidden>
                                                                                 </div>
                                                                             </div>
                                                                             <div class="modal-footer justify-content-between">
@@ -194,23 +202,22 @@ include '../layouts/navbar.php';
                                                             <div class="modal-dialog">
                                                                 <div class="modal-content">
                                                                     <div class="modal-header">
-                                                                        <h4 class="modal-title">Bayar Transaksi</h4>
+                                                                        <h4 class="modal-title">Batalkan Transaksi</h4>
                                                                         <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                                                                             <span aria-hidden="true">&times;</span>
                                                                         </button>
                                                                     </div>
                                                                     <div class="modal-body">
                                                                         <p>Apakah anda belum menerima dana transaksi sebesar <b>Rp. <?= number_format($total); ?></b> dari <b><?php echo $d_tb_member_d['nama']; ?></b> ?</p>
-                                                                        <form method="post" action="batal_bayar_transaksi.php">
+                                                                        <form method="post" action="update_batal_bayar_transaksi.php">
                                                                             <div class="modal-body">
                                                                                 <div class="form-group">
                                                                                     <input type="text" name="id" value="<?php echo $d_tb_transaksi['id']; ?>" hidden>
-                                                                                    <input type="text" name="belum_dibayar" value="belum_dibayar" hidden>
                                                                                 </div>
                                                                             </div>
                                                                             <div class="modal-footer justify-content-between">
                                                                                 <button type="button" class="btn btn-default" data-dismiss="modal">Keluar</button>
-                                                                                <button type="submit" class="btn btn-primary">Batalkan</button>
+                                                                                <button type="submit" class="btn btn-primary">Update</button>
                                                                             </div>
                                                                         </form>
                                                                     </div>
@@ -335,44 +342,50 @@ include '../layouts/navbar.php';
                                                         <span aria-hidden="true">&times;</span>
                                                     </button>
                                                 </div>
-                                                <form method="post" action="tambah_Transaksi.php">
+                                                <form method="post" action="simpan_transaksi.php">
                                                     <div class="modal-body">
                                                         <div class="form-group">
                                                             <label>Pilih Member</label>
                                                             <select class="form-control">
                                                                 <option> --- Pilih Nama Member --- </option>
-                                                                <option>Outlet 1</option>
-                                                                <option>Outlet 2</option>
-                                                                <option>Outlet 3</option>
-                                                                <option>Outlet 4</option>
-                                                                <option>Outlet 5</option>
+                                                                <?php
+                                                                include "../koneksi.php";
+                                                                $tb_member = mysqli_query($koneksi, "SELECT * FROM tb_member");
+                                                                while ($d_tb_member = mysqli_fetch_array($tb_member)) {
+                                                                ?>
+                                                                    <option value="<?= $d_tb_member['id'] ?>"><?= $d_tb_member['nama'] ?></option>
+                                                                <?php } ?>
                                                             </select>
                                                         </div>
                                                         <div class="form-group">
                                                             <label>Pilih Outlet</label>
-                                                            <select class="form-control">
+                                                            <select name="id_outlet" class="form-control" id="id_outlet" required>
                                                                 <option> --- Pilih Nama Outlet --- </option>
-                                                                <option>Outlet 1</option>
-                                                                <option>Outlet 2</option>
-                                                                <option>Outlet 3</option>
-                                                                <option>Outlet 4</option>
-                                                                <option>Outlet 5</option>
+                                                                <?php
+                                                                include "../koneksi.php";
+                                                                $tb_outlet = mysqli_query($koneksi, "SELECT * FROM tb_outlet");
+                                                                while ($d_tb_outlet = mysqli_fetch_array($tb_outlet)) {
+                                                                ?>
+                                                                    <option value="<?= $d_tb_outlet['id'] ?>"><?= $d_tb_outlet['nama'] ?></option>
+                                                                <?php } ?>
                                                             </select>
                                                         </div>
                                                         <div class="form-group">
                                                             <label>Pilih Paket</label>
-                                                            <select class="form-control">
+                                                            <select class="form-control" name="id_paket" id="id_paket" required>
                                                                 <option> --- Pilih Nama Paket --- </option>
-                                                                <option>Outlet 1</option>
-                                                                <option>Outlet 2</option>
-                                                                <option>Outlet 3</option>
-                                                                <option>Outlet 4</option>
-                                                                <option>Outlet 5</option>
+                                                                <?php
+                                                                include "../koneksi.php";
+                                                                $tb_paket = mysqli_query($koneksi, "SELECT * FROM tb_paket");
+                                                                while ($d_tb_paket = mysqli_fetch_array($tb_paket)) {
+                                                                ?>
+                                                                    <option value="<?= $d_tb_paket['id'] ?>"><?= $d_tb_paket['nama_paket'] ?></option>
+                                                                <?php } ?>
                                                             </select>
                                                         </div>
                                                         <div class="form-group">
                                                             <label>Berat</label>
-                                                            <input type="text" name="nama" class="form-control" placeholder="Masukkan Berat">
+                                                            <input type="number" name="qty" class="form-control" placeholder="Masukkan Berat">
                                                         </div>
                                                         <div class="form-group">
                                                             <label>Keterangan</label>
@@ -387,6 +400,7 @@ include '../layouts/navbar.php';
                                             </div>
                                         </div>
                                     </div>
+
                                 </tbody>
                             </table>
                         </div>
@@ -399,6 +413,20 @@ include '../layouts/navbar.php';
     </div>
     <!-- /.content -->
 </div>
+<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+<script type="text/javascript">
+    $('#id_outlet').change(function() {
+        var id_outlet = $(this).val();
+        $.ajax({
+            type: 'POST',
+            url: 'ajax_transaksi.php',
+            data: 'id_outlet=' + id_outlet,
+            success: function(response) {
+                $('#id_paket').html(response);
+            }
+        });
+    });
+</script>
 <?php
 include '../layouts/footer.php';
 ?>
