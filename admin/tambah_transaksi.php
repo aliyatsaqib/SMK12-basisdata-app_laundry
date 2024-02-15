@@ -86,6 +86,16 @@ include '../layouts/navbar.php';
             </div>
         </div>
     </div>
+
+    <!-- bagian tambah transaksi paket -->
+    <option> --- Pilih Nama Paket --- </option>
+    <?php
+    include "../koneksi.php";
+    $tb_paket = mysqli_query($koneksi, "SELECT * FROM tb_paket");
+    while ($d_tb_paket = mysqli_fetch_array($tb_paket)) {
+    ?>
+        <option value="<?= $d_tb_paket['id'] ?>"><?= $d_tb_paket['nama_paket'] ?></option>
+    <?php } ?>
 </div>
 <?php
 include '../layouts/footer.php';
