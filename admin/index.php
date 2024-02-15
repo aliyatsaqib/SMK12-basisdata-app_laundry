@@ -26,7 +26,7 @@ include '../layouts/navbar.php';
                             <h5 class="card-title m-0">Featured</h5>
                         </div>-->
                         <div class="card-body">
-                            <h6 class="card-title">Selamat Datang di halaman Kasir</h6>
+                            <h6 class="card-title">Selamat Datang di halaman Admin</h6>
                         </div>
                     </div>
                 </div>

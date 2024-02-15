@@ -64,10 +64,9 @@ include '../layouts/navbar.php';
                                         <th>Jenis Paket</th>
                                         <th>Nama Outlet</th>
                                         <th>Berat Cucian</th>
+                                        <th>Biya Tambahan</th>
                                         <th>Total Bayar</th>
                                         <th style="width: 150px;">Status</th>
-                                        <th>Ubah Status</th>
-                                        <th>Bayar Transaksi</th>
                                         <th>Aksi</th>
                                     </tr>
                                 </thead>
@@ -89,63 +88,98 @@ include '../layouts/navbar.php';
                                                         <td><?= $d_tb_transaksi['kode_invoice'] ?></td>
                                                         <td><?= $d_tb_member_d['nama'] ?></td>
                                                         <td>
-                                                            <?php $tb_paket = mysqli_query($koneksi, "SELECT * FROM tb_paket where id='$d_tb_transaksi[id_paket]'");
-                                                            while ($d_tb_paket_d = mysqli_fetch_array($tb_paket)) { ?>
-                                                                <?= $d_tb_paket_d['nama_paket'] ?>
-                                                            <?php } ?>
-                                                            <button class="btn btn-primary btn-sm" data-toggle="modal" data-target="#modal-pilih-paket<?php echo $d_tb_transaksi['id']; ?>">Pilih</button>
-
+                                                            <table>
+                                                                <tr>
+                                                                    <td>
+                                                                        <?php $tb_paket = mysqli_query($koneksi, "SELECT * FROM tb_paket where id='$d_tb_transaksi[id_paket]'");
+                                                                        while ($d_tb_paket_d = mysqli_fetch_array($tb_paket)) { ?>
+                                                                            <?= $d_tb_paket_d['nama_paket'] ?>
+                                                                        <?php } ?>
+                                                                    </td>
+                                                                    <td>
+                                                                        <button class="btn btn-primary btn-sm" data-toggle="modal" data-target="#modal-pilih-paket<?php echo $d_tb_transaksi['id']; ?>">Pilih</button>
+                                                                    </td>
+                                                                </tr>
+                                                            </table>
                                                         </td>
                                                         <td><?= $d_tb_outlet_d['nama'] ?></td>
                                                         <td>
                                                             <?= $d_tb_transaksi['qty'] ?>
-                                                            <?php $tb_paket = mysqli_query($koneksi, "SELECT * FROM tb_paket where id='$d_tb_transaksi[id_paket]'");
+                                                            <?php
+                                                            $tb_paket = mysqli_query($koneksi, "SELECT * FROM tb_paket where id='$d_tb_transaksi[id_paket]'");
                                                             while ($d_tb_paket_d = mysqli_fetch_array($tb_paket)) { ?>
                                                                 <?= $d_tb_paket_d['jenis'] ?>
                                                             <?php } ?>
                                                         </td>
+                                                        <td>Rp. <?= number_format($d_tb_transaksi['biaya_tambahan']) ?></td>
                                                         <td>
-                                                        </td>
-                                                        <td>
-                                                            <div class="row">
-                                                                <div class="col-sm-6">
-                                                                    <?php
-                                                                    if ($d_tb_transaksi['status'] == 'baru') { ?>
-                                                                        <p class="btn btn-default btn-sm">Baru</p>
-                                                                    <?php } else if ($d_tb_transaksi['status'] == 'proses') { ?>
-                                                                        <p class="btn btn-warning btn-sm">Proses</p>
-                                                                    <?php } else if ($d_tb_transaksi['status'] == 'selesai') { ?>
-                                                                        <p class="btn btn-primary btn-sm">Selesai</p>
-                                                                    <?php } else { ?>
-                                                                        <p class="btn btn-success btn-sm">Diambil</p>
-                                                                    <?php } ?>
-                                                                </div>
-                                                                <div class="col-sm-6">
-                                                                    <?php
-                                                                    if ($d_tb_transaksi['dibayar'] == 'dibayar') { ?>
-                                                                        <p class="btn btn-success btn-sm">DiBayar</p>
-                                                                    <?php } else { ?>
-                                                                        <p class="btn btn-danger btn-sm">Belum DiBayar</p>
-                                                                    <?php } ?>
-                                                                </div>
-                                                            </div>
-
-
+                                                            <?php
+                                                            if ($d_tb_transaksi['id_paket'] == '0') { ?>
+                                                            <?php } else { ?>
+                                                                <?php
+                                                                $tb_paket = mysqli_query($koneksi, "SELECT * FROM tb_paket where id='$d_tb_transaksi[id_paket]'");
+                                                                while ($d_tb_paket_d = mysqli_fetch_array($tb_paket)) {
+                                                                    $a = $d_tb_paket_d['harga'];
+                                                                }
+                                                                $b = $d_tb_transaksi['qty'];
+                                                                $c = $d_tb_transaksi['biaya_tambahan'];
+                                                                $total = ($a * $b) + $c;
+                                                                //echo "Rp. $total";
+                                                                ?>
+                                                                Rp.<?= number_format($total); ?>
+                                                            <?php } ?>
 
                                                         </td>
-                                                        <td><button class="btn btn-primary btn-sm" data-toggle="modal" data-target="#modal-ubah-status<?php echo $d_tb_transaksi['id']; ?>"><i class="fas fa-edit"> Ubah</i></button>
+                                                        <td>
+                                                            <table>
+                                                                <tr>
+                                                                    <td>
+                                                                        <?php
+                                                                        if ($d_tb_transaksi['status'] == 'baru') { ?>
+                                                                            <p class="btn btn-default btn-sm">Baru</p>
+                                                                        <?php } else if ($d_tb_transaksi['status'] == 'proses') { ?>
+                                                                            <p class="btn btn-warning btn-sm">Proses</p>
+                                                                        <?php } else if ($d_tb_transaksi['status'] == 'selesai') { ?>
+                                                                            <p class="btn btn-primary btn-sm">Selesai</p>
+                                                                        <?php } else { ?>
+                                                                            <p class="btn btn-success btn-sm">Diambil</p>
+                                                                        <?php } ?>
+                                                                    </td>
+                                                                    <td>
+                                                                        <?php
+                                                                        if ($d_tb_transaksi['id_paket'] == '0') { ?>
+
+                                                                        <?php } else { ?>
+                                                                            <?php
+                                                                            if ($d_tb_transaksi['dibayar'] == 'dibayar') { ?>
+                                                                                <p class="btn btn-success btn-sm">DiBayar</p>
+                                                                            <?php } else { ?>
+                                                                                <p class="btn btn-danger btn-sm">Belum DiBayar</p>
+                                                                            <?php } ?>
+                                                                        <?php } ?>
+                                                                    </td>
+                                                                </tr>
+                                                            </table>
                                                         </td>
                                                         <td>
+                                                            <button class="btn btn-warning btn-sm" data-toggle="modal" data-target="#modal-edit<?php echo $d_tb_transaksi['id']; ?>"><i class="fas fa-edit"> Edit</i></button>
+                                                            <br><br>
+                                                            <button class="btn btn-danger btn-sm" data-toggle="modal" data-target="#modal-hapus<?php echo $d_tb_transaksi['id']; ?>"><i class="fas fa-trash"> Hapus</i></button>
+                                                            <br><br>
+                                                            <button class="btn btn-primary btn-sm" data-toggle="modal" data-target="#modal-ubah-status<?php echo $d_tb_transaksi['id']; ?>"><i class="fas fa-edit"> Status</i></button>
+                                                            <br><br>
                                                             <?php
                                                             if ($d_tb_transaksi['dibayar'] == 'dibayar') { ?>
                                                                 <button class="btn btn-danger btn-sm" data-toggle="modal" data-target="#modal-batalkan<?php echo $d_tb_transaksi['id']; ?>"><i class="fas fa-times"> Batalkan</i></button>
                                                             <?php } else { ?>
                                                                 <button class="btn btn-primary btn-sm" data-toggle="modal" data-target="#modal-bayar<?php echo $d_tb_transaksi['id']; ?>"><i class="fas fa-edit"> Bayar</i></button>
                                                             <?php } ?>
-                                                        </td>
-                                                        <td>
-                                                            <button class="btn btn-warning btn-sm" data-toggle="modal" data-target="#modal-edit<?php echo $d_tb_transaksi['id']; ?>"><i class="fas fa-edit"> Edit</i></button>
-                                                            <button class="btn btn-danger btn-sm" data-toggle="modal" data-target="#modal-hapus<?php echo $d_tb_transaksi['id']; ?>"><i class="fas fa-trash"> Hapus</i></button>
+                                                            <br><br>
+                                                            <?php
+                                                            if ($d_tb_transaksi['id_paket'] == '0') { ?>
+                                                            <?php } else { ?>
+                                                                <a href="print_nota.php?id=<?php echo $d_tb_transaksi['id']; ?>" class="btn btn-info btn-sm" target="_blank"><i class="fas fa-print"></i> Print</a>
+                                                            <?php } ?>
                                                         </td>
                                                     </tr>
 
@@ -159,7 +193,7 @@ include '../layouts/navbar.php';
                                                                     </button>
                                                                 </div>
                                                                 <div class="modal-body">
-                                                                    <p>Apakah anda yakin akan menghapus transaksi <b><?php echo $d_tb_member_d['nama']; ?></b> ?</p>
+                                                                    <p>Apakah anda yakin akan menghapus transaksi <b><?php echo $d_tb_transaksi['kode_invoice']; ?></b> ?</p>
                                                                 </div>
                                                                 <div class="modal-footer justify-content-between">
                                                                     <button type="button" class="btn btn-default" data-dismiss="modal">Keluar</button>
@@ -179,13 +213,7 @@ include '../layouts/navbar.php';
                                                                     </button>
                                                                 </div>
                                                                 <div class="modal-body">
-                                                                    <p>Apakah anda sudah menerima dana transaksi sebesar <b><?php
-                                                                                                                            $a = $d_tb_paket_d['harga'];
-                                                                                                                            $b = $d_tb_transaksi['qty'];
-                                                                                                                            $c = $d_tb_transaksi['biaya_tambahan'];
-                                                                                                                            $total = ($a * $b) + $c;
-                                                                                                                            echo "Rp. $total";
-                                                                                                                            ?></b> dari <b><?= $d_tb_member_d['nama'] ?></b>...?</p>
+                                                                    <p>Apakah anda sudah menerima dana transaksi sebesar <b>Rp. <?= number_format($total); ?></b> dari <b><?php echo $d_tb_member_d['nama']; ?></b>...?</p>
                                                                     <form method="post" action="update_bayar_transaksi.php">
                                                                         <div class="modal-body">
                                                                             <div class="form-group">

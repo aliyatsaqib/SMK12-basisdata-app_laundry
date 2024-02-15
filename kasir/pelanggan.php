@@ -32,6 +32,28 @@ include '../layouts/navbar.php';
                         </div>
                         <!-- /.card-header -->
                         <div class="card-body">
+                            <?php
+                            if (isset($_GET['info'])) {
+                                if ($_GET['info'] == "hapus") { ?>
+                                    <div class="alert alert-success alert-dismissible">
+                                        <button type="button" class="close" data-dismiss="alert" aria-hidden="true">&times;</button>
+                                        <h5><i class="icon fas fa-trash"></i> Sukses</h5>
+                                        Data berhasil di hapus
+                                    </div>
+                                <?php } else if ($_GET['info'] == "simpan") { ?>
+                                    <div class="alert alert-success alert-dismissible">
+                                        <button type="button" class="close" data-dismiss="alert" aria-hidden="true">&times;</button>
+                                        <h5><i class="icon fas fa-check"></i> Sukses</h5>
+                                        Data berhasil di hapus
+                                    </div>
+                                <?php } else if ($_GET['info'] == "update") { ?>
+                                    <div class="alert alert-success alert-dismissible">
+                                        <button type="button" class="close" data-dismiss="alert" aria-hidden="true">&times;</button>
+                                        <h5><i class="icon fas fa-edit"></i> Sukses</h5>
+                                        Data berhasil di update
+                                    </div>
+                            <?php }
+                            } ?>
                             <table class="table table-bordered">
                                 <thead>
                                     <tr>
@@ -44,78 +66,98 @@ include '../layouts/navbar.php';
                                     </tr>
                                 </thead>
                                 <tbody>
-                                    <tr>
-                                        <td>1.</td>
-                                        <td>Nama</td>
-                                        <td>Alamat</td>
-                                        <td>Jenis Kelamin</td>
-                                        <td>Telephone</td>
-                                        <td>
-                                            <button class="btn btn-warning btn-sm" data-toggle="modal" data-target="#modal-edit"><i class="fas fa-edit"> Edit</i></button>
-                                            <button class="btn btn-danger btn-sm" data-toggle="modal" data-target="#modal-hapus"><i class="fas fa-trash"> Hapus</i></button>
-                                        </td>
-                                    </tr>
+                                    <?php
+                                    $no = 1;
+                                    include "../koneksi.php";
+                                    $tb_member = mysqli_query($koneksi, "SELECT * FROM tb_member");
+                                    while ($d_tb_member = mysqli_fetch_array($tb_member)) {
+                                    ?>
+                                        <tr>
+                                            <td><?php echo $no++; ?></td>
+                                            <td><?= $d_tb_member['nama'] ?></td>
+                                            <td><?= $d_tb_member['alamat'] ?></td>
+                                            <td>
+                                                <?php
+                                                if ($d_tb_member['jenis_kelamin'] == 'L') { ?>
+                                                    Laki-Laki
+                                                <?php } else { ?>
+                                                    Perempuan
+                                                <?php } ?>
+                                            </td>
+                                            <td><?= $d_tb_member['tlp'] ?></td>
+                                            <td>
+                                                <button class="btn btn-warning btn-sm" data-toggle="modal" data-target="#modal-edit<?php echo $d_tb_member['id']; ?>"><i class="fas fa-edit"> Edit</i></button>
+                                                <button class="btn btn-danger btn-sm" data-toggle="modal" data-target="#modal-hapus<?php echo $d_tb_member['id']; ?>"><i class="fas fa-trash"> Hapus</i></button>
+                                            </td>
+                                        </tr>
 
-                                    <div class="modal fade" id="modal-hapus">
-                                        <div class="modal-dialog">
-                                            <div class="modal-content">
-                                                <div class="modal-header">
-                                                    <h4 class="modal-title">Hapus Data Pelanggan</h4>
-                                                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                                                        <span aria-hidden="true">&times;</span>
-                                                    </button>
-                                                </div>
-                                                <div class="modal-body">
-                                                    <p>Apakah anda yakin akan menghapus data ini ... ?</p>
-                                                </div>
-                                                <div class="modal-footer justify-content-between">
-                                                    <button type="button" class="btn btn-default" data-dismiss="modal">Keluar</button>
-                                                    <a href="hapus_Pelanggan.php" class="btn btn-primary">Hapus</a>
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </div>
-
-                                    <div class="modal fade" id="modal-edit">
-                                        <div class="modal-dialog">
-                                            <div class="modal-content">
-                                                <div class="modal-header">
-                                                    <h4 class="modal-title">Edit Data Pelanggan</h4>
-                                                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                                                        <span aria-hidden="true">&times;</span>
-                                                    </button>
-                                                </div>
-                                                <form method="post" action="edit_Pelanggan.php">
+                                        <div class="modal fade" id="modal-hapus<?php echo $d_tb_member['id']; ?>">
+                                            <div class="modal-dialog">
+                                                <div class="modal-content">
+                                                    <div class="modal-header">
+                                                        <h4 class="modal-title">Hapus Data Pelanggan</h4>
+                                                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                                            <span aria-hidden="true">&times;</span>
+                                                        </button>
+                                                    </div>
                                                     <div class="modal-body">
-                                                        <div class="form-group">
-                                                            <div class="form-group">
-                                                                <label>Nama Pelanggan</label>
-                                                                <input type="text" name="" class="form-control" placeholder="Masukkan Nama Pelanggan">
-                                                            </div>
-                                                            <div class="form-group">
-                                                                <label>Alamat</label>
-                                                                <textarea name="" class="form-control" rows="3"></textarea>
-                                                            </div>
-                                                            <label>Jenis Kelamin</label>
-                                                            <select class="form-control">
-                                                                <option> --- Pilih Jenis Kelamin --- </option>
-                                                                <option value="L">Laki-Laki</option>
-                                                                <option value="P">Perempuan</option>
-                                                            </select>
-                                                        </div>
-                                                        <div class="form-group">
-                                                            <label>Telephone</label>
-                                                            <input type="text" name="" class="form-control" placeholder="Masukkan No Telephone">
-                                                        </div>
+                                                        <p>Apakah anda yakin akan menghapus data <b><?php echo $d_tb_member['nama']; ?></b> ... ?</p>
                                                     </div>
                                                     <div class="modal-footer justify-content-between">
                                                         <button type="button" class="btn btn-default" data-dismiss="modal">Keluar</button>
-                                                        <button type="submit" class="btn btn-primary">Update</button>
+                                                        <a href="hapus_pelanggan.php?id=<?php echo $d_tb_member['id']; ?>" class="btn btn-primary">Hapus</a>
                                                     </div>
-                                                </form>
+                                                </div>
                                             </div>
                                         </div>
-                                    </div>
+
+                                        <div class="modal fade" id="modal-edit<?php echo $d_tb_member['id']; ?>">
+                                            <div class="modal-dialog">
+                                                <div class="modal-content">
+                                                    <div class="modal-header">
+                                                        <h4 class="modal-title">Edit Data Pelanggan</h4>
+                                                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                                            <span aria-hidden="true">&times;</span>
+                                                        </button>
+                                                    </div>
+                                                    <form method="post" action="update_pelanggan.php">
+                                                        <div class="modal-body">
+                                                            <div class="form-group">
+                                                                <div class="form-group">
+                                                                    <label>Nama Pelanggan</label>
+                                                                    <input type="text" name="id" value="<?php echo $d_tb_member['id']; ?>" hidden>
+                                                                    <input type="text" name="nama" class="form-control" value="<?php echo $d_tb_member['nama']; ?>" placeholder="Masukkan Nama Pelanggan">
+                                                                </div>
+                                                                <div class="form-group">
+                                                                    <label>Alamat</label>
+                                                                    <textarea class="form-control" name="alamat" rows="3"><?php echo $d_tb_member['alamat']; ?></textarea>
+                                                                </div>
+                                                                <label>Jenis Kelamin</label>
+                                                                <select class="form-control">
+                                                                    <option> --- Pilih Jenis Kelamin --- </option>
+                                                                    <option value="L" <?php if ('L' == $d_tb_member['jenis_kelamin']) {
+                                                                                            echo 'selected';
+                                                                                        } ?>>Laki-Laki</option>
+                                                                    <option value="P" <?php if ('P' == $d_tb_member['jenis_kelamin']) {
+                                                                                            echo 'selected';
+                                                                                        } ?>>Perempuan</option>
+                                                                </select>
+                                                            </div>
+                                                            <div class="form-group">
+                                                                <label>Telephone</label>
+                                                                <input type="text" name="tlp" class="form-control" value="<?php echo $d_tb_member['tlp']; ?>" placeholder="Masukkan No Telephone">
+                                                            </div>
+                                                        </div>
+                                                        <div class="modal-footer justify-content-between">
+                                                            <button type="button" class="btn btn-default" data-dismiss="modal">Keluar</button>
+                                                            <button type="submit" class="btn btn-primary">Update</button>
+                                                        </div>
+                                                    </form>
+                                                </div>
+                                            </div>
+                                        </div>
+
+                                    <?php } ?>
 
                                     <div class="modal fade" id="modal-tambah">
                                         <div class="modal-dialog">
@@ -126,19 +168,19 @@ include '../layouts/navbar.php';
                                                         <span aria-hidden="true">&times;</span>
                                                     </button>
                                                 </div>
-                                                <form method="post" action="tambah_Pelanggan.php">
+                                                <form method="post" action="simpan_pelanggan.php">
                                                     <div class="modal-body">
                                                         <div class="form-group">
                                                             <div class="form-group">
                                                                 <label>Nama Pelanggan</label>
-                                                                <input type="text" name="" class="form-control" placeholder="Masukkan Nama Pelanggan">
+                                                                <input type="text" name="nama" class="form-control" placeholder="Masukkan Nama Pelanggan">
                                                             </div>
                                                             <div class="form-group">
                                                                 <label>Alamat</label>
-                                                                <textarea name="" class="form-control" rows="3"></textarea>
+                                                                <textarea name="alamat" class="form-control" rows="3"></textarea>
                                                             </div>
                                                             <label>Jenis Kelamin</label>
-                                                            <select class="form-control">
+                                                            <select class="form-control" name="jenis_kelamin">
                                                                 <option> --- Pilih Jenis Kelamin --- </option>
                                                                 <option value="L">Laki-Laki</option>
                                                                 <option value="P">Perempuan</option>
@@ -146,7 +188,7 @@ include '../layouts/navbar.php';
                                                         </div>
                                                         <div class="form-group">
                                                             <label>Telephone</label>
-                                                            <input type="text" name="" class="form-control" placeholder="Masukkan No Telephone">
+                                                            <input type="text" name="tlp" class="form-control" placeholder="Masukkan No Telephone">
                                                         </div>
                                                     </div>
                                                     <div class="modal-footer justify-content-between">
